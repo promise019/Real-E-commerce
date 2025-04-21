@@ -1,4 +1,4 @@
-import FlashSales from "../layout/FlashSales"
+import FlashSales from "../layout/FlashSales" 
 import Header from "../layout/Header"
 
 function HomePage() {

@@ -5,7 +5,15 @@ export const cartContext = createContext();
 function cartReducer(state, action) {
     switch (action.type) {
         case 'cart/add':
-            return [...state, action.payload]
+            const exist = state.find(item=> item.id === action.payload.id)
+            if (exist) {
+               return state.map(item=> item.id === action.payload.id ?
+                   (alert('already added to cart'), {...item, quantity:item.quantity + action.payload.quantity} ): item
+                )
+            }else{
+                return [...state, action.payload]
+            }
+
             break;
 
         case 'cart/remove':

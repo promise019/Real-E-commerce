@@ -40,7 +40,7 @@ function NavigationBar() {
         
 
         <div className="w-[20%] flex absolute top-2 ml-[60%] sm:ml-[70%]
-        md:w-[fit-content] md:top-13 md:ml-[78%] lg:top-5.5 lg:ml-[82%] xl:ml-[86%]" >
+        md:w-[fit-content] md:top-13 md:ml-[78%] lg:top-5.5 lg:right-15 xl:ml-[82%]" >
             <div className="w-[12px] h-[fit-content] p-[1%] text-center bg-red-400 rounded-full text-[50%] 
                  font-bold text-white absolute ml-4">
                 <span>{wishList.length}</span>
