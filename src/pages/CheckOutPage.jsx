@@ -17,6 +17,10 @@ export default function CheckOutPage() {
             <div className="p-2 mt-6.5">
                 {cart.map(item => item.id === parseInt(id) &&
                     <div className="">
+                      <div className="w-[100%] flex justify-between p-2">
+                      <span>Price: ${item.price.toLocaleString()}.00</span> {' '}
+                      <span>Total Price: ${(item.price * item.quantity).toLocaleString()}.00</span>
+                      </div>
                       <div className="flex justify-between xl:w-[50%]">
                         <div className="w-[25%] grid-cols-3 space-y-3.5">
                           <img src={item.directory} alt={item.name} className="rounded-2xl"/>
@@ -33,6 +37,20 @@ export default function CheckOutPage() {
                       <p className="text-center">{item.describtion}</p>
 
                       <br />
+
+                      <div className="w-[100%] flex justify-between p-3 md:w-[80%] md:ml-[13%]">
+                        <button onClick={()=> dispatch({type:'cart/decrement', payload:item.id})}
+                          className="bg-amber-200 rounded-xl p-1 font-bold w-[10%]"
+                          >
+                          -
+                        </button>
+                        <span>Quantity:{item.quantity}</span>
+                        <button onClick={()=> dispatch({type:'cart/increment', payload:item.id})}
+                          className="bg-amber-200 rounded-xl p-1 font-bold w-[10%]"
+                          >
+                          +
+                        </button>
+                      </div>
 
                       <select name="bank" className="border ml-[3%] rounded-l-xl  bg-blue-800 text-white p-1 md:ml-[25%]">
                         <option value="">Bank</option>
