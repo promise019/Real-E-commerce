@@ -4,17 +4,21 @@ import wishlistIcon from '../assets/icons/Heart.svg'
 import { cartContext } from "../context/cartContext"
 import { wishlistContext } from "../context/wishListContext"
 import { Link } from "react-router"
+import { searchContext } from "../context/SearchQueryContext"
 
 function FlashSales() {
     const {dispatch} = useContext(cartContext)
     const {addWishlist, removeWishlist, wishList} = useContext(wishlistContext)
+    const {query, setQuery} = useContext(searchContext)
+    const search = products.filter(item=> item.cartegory.toLowerCase().includes(query.toLowerCase()) || item.describtion.toLowerCase().includes(query.toLowerCase())
+        || item.name.toLowerCase().includes(query.toLowerCase()))
     
     return(
         <div className="w-[100vw] pl-3 sm:pl-15 md:pl-3 xl:w-[80vw] xl:ml-[10%] ">
             <h1 className="absolute mb-[1%]">Flash Sales</h1>
             <br />
             <div className="overflow-x-scroll overflow-y-hidden ">
-                {products.map(item=>
+                {search.map(item=>
                     <div key={item.id} 
                      className="w-[45%] h-[190px] inline-block p-1 border border-gray-400 rounded-2xl mb-4 ml-[1%] mr-[3%]
                      sm:w-[42%] md:w-[22%] md:ml-0 xl:w-[18%] xl:ml-0 xl:mr-[2%] xl:h-[200px]"
@@ -50,6 +54,7 @@ function FlashSales() {
                         
                     </div>
                 )}
+                {search.length < 1 && <h1>out of stock</h1>}
             </div>
         </div>
     )
