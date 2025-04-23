@@ -2,13 +2,14 @@ import { createContext, useEffect, useReducer } from "react"
 
 export const cartContext = createContext();
 
+
 function cartReducer(state, action) {
     switch (action.type) {
         case 'cart/add':
             const exist = state.find(item=> item.id === action.payload.id)
             if (exist) {
                return state.map(item=> item.id === action.payload.id ?
-                   (alert('already added to cart'), {...item, quantity:item.quantity + action.payload.quantity} ): item
+                   {...item} : item
                 )
             }else{
                 return [...state, action.payload]

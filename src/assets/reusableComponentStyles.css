@@ -1,2 +1,6 @@
 @import 'tailwindcss';
 
+.bg-image{
+    background-image: url('../assets/image/transparent.png');
+    @apply h-[100vh]
+}

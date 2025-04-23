@@ -7,7 +7,7 @@ function Header() {
     const {query, setQuery} = useContext(searchContext)
 
     return(
-        <header className="z-10 bg-white p-2 fixed w-[100vw] -t-[100%] border-b-1 border-gray-500">
+        <header className="z-6 bg-white p-2 fixed w-[100vw] -t-[100%] border-b-1 border-gray-500">
             <h1 className="font-bold text-xl lg:mt-3">Ideal Commerce</h1>
             <NavigationBar/>
             <input type="search" placeholder="what are you looking for?" value={query}

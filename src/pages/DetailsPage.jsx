@@ -19,12 +19,12 @@ export default function DetailsPage() {
 
             <div className="p-2 mt-6.5">
                 {products.map(item => item.id === parseInt(id) &&
-                    <div className="">
+                    <div className="" key={item.id}>
                       <div className="flex justify-between xl:w-[50%]">
                         <div className="w-[25%] grid-cols-3 space-y-3.5">
                           <img src={item.directory} alt={item.name} className="rounded-2xl"/>
-                          <img src={item.directory} alt={item.name} className="rounded-2xl" />
-                          <img src={item.directory} alt={item.name} className="rounded-2xl" />
+                          <img src={item.directory} alt={item.name} className="rounded-2xl"/>
+                          <img src={item.directory} alt={item.name} className="rounded-2xl"/>
                         </div>
                         <img src={item.directory} alt={item.name}
                          className="w-[70%] rounded-2xl"

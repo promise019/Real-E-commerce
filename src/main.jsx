@@ -5,9 +5,11 @@ import { BrowserRouter } from 'react-router'
 import CartProvider from './context/cartContext.jsx'
 import WishlistProvider from './context/wishListContext.jsx'
 import SearchProvider from './context/SearchQueryContext.jsx'
+import ProductProvider from './context/productsContext.jsx'
 
 createRoot(document.getElementById('root')).render(
 <CartProvider>
+  <ProductProvider>
   <WishlistProvider>
   <SearchProvider>
   <BrowserRouter>
@@ -15,5 +17,6 @@ createRoot(document.getElementById('root')).render(
   </BrowserRouter>
   </SearchProvider>
   </WishlistProvider>
+  </ProductProvider>
 </CartProvider>
 )
