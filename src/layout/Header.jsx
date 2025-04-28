@@ -13,10 +13,10 @@ function Header() {
             <input type="search" placeholder="what are you looking for?" value={query}
              onChange={(e)=> setQuery(e.target.value)}
              className="w-[100%] mt-4 pl-1 pt-1 pr-10 pb-1 border-[1px] border-200-amber rounded-xl
-             md:w-[77%] lg:w-[30%] lg:absolute lg:top-1 lg:right-50 xl:pr-13"
+             md:w-[64%] lg:w-[26%] lg:absolute lg:top-1 lg:right-[30%] xl:pr-13 xl:w-[20%] xl:right-[34%]"
             />
             <button className="-ml-7">
-            <img src={search} className="inline-block w-5 lg:absolute lg:top-6.5 lg:ml-[80%] xl:ml-[83%] "/>
+            <img src={search} className="inline-block w-5 lg:absolute lg:top-6.5 lg:ml-[68%] xl:ml-[65%] "/>
             </button>
         </header>
     )

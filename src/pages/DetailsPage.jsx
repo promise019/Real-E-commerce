@@ -17,7 +17,7 @@ export default function DetailsPage() {
                 <img src={back} alt="" />
             </button>
 
-            <div className="p-2 mt-6.5">
+            <div className="p-2 mt-6.5 md:w-[70%] md:ml-[15%] xl:ml-0 xl:mt-9">
                 {products.map(item => item.id === parseInt(id) &&
                     <div className="" key={item.id}>
                       <div className="flex justify-between xl:w-[50%]">
@@ -32,6 +32,7 @@ export default function DetailsPage() {
                       </div>
 
                      <div className="xl:w-[50%] xl:absolute xl:ml-[50%] xl:top-[30%]">
+                      {/* <h1>{item.price}</h1> */}
                       <h2 className="text-center text-2xl mt-3 font-bold">{item.name}</h2>
                       <p className="text-center">{item.describtion}</p>
 

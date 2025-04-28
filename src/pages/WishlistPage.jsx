@@ -4,23 +4,24 @@ import { wishlistContext } from "../context/wishListContext";
 import wishlistIcon from '../assets/icons/Heart.svg'
 import back from '../assets/icons/Arrow left.svg'
 import { Link } from "react-router";
+import { productContext } from "../context/productsContext";
 
 export default function WishListPage() {
     const {wishList, addWishlist, removeWishlist} = useContext(wishlistContext)
-    const {dispatch} = useContext(cartContext)
+    const {dispatch, cart} = useContext(cartContext)
 
     return(
-        <div className="p-2">
+        <div className="p-2 mt-12 md:ml-4 lg:ml-[5%]">
             <button onClick={()=> window.history.back()}
-             className="fixed z-3 border border-black rounded-full w-7"
+             className="fixed top-3 left-3 z-3 border border-black rounded-full w-7"
             >
                 <img src={back} alt="" />
             </button>
             {wishList.length < 1 && <div className="text-center">No Item Added To WishList</div>}
             {wishList.map(item=>
                     <div key={item.id} 
-                     className="w-[45%] h-[190px] mt-12 inline-block p-1 border border-gray-400 rounded-2xl mb-4 ml-[3%] mr-[1%]
-                     sm:w-[42%] sm:h-[200px] md:w-[22%] md:ml-0 xl:w-[18%] xl:ml-0 xl:mr-[2%] xl:h-[200px]"
+                     className="w-[45%] h-[188px] inline-block p-1 border border-gray-400 rounded-2xl mb-3 ml-[3%] mr-[1%]
+                     sm:w-[42%] sm:h-[200px] md:w-[22%] md:h-[187px] md:ml-1 lg:w-[21%] lg:ml-3 xl:w-[18%] xl:ml-0 xl:mr-[2%] xl:h-[200px]"
                     >
                     
                     
@@ -48,7 +49,8 @@ export default function WishListPage() {
                     </Link>
 
                         <button onClick={()=>dispatch({type:'cart/add', payload:{...item, isAdded:true}})}
-                         className="w-[100%] bg-black text-white font-bold p-1 rounded-xl">
+                         disabled={cart.find(i=> i.id === item.id)}
+                         className="w-[100%] bg-black text-white font-bold p-1 rounded-xl disabled:bg-red-300">
                             Add to cart
                         </button>
                         
