@@ -25,6 +25,9 @@ export default function SignIn() {
         }else if(signupData.email !== userData.email || signupData.password !== userData.password){
             toast.error('incorrect email or password')
             
+        }else if(!signupData){
+            toast.error('user not found')
+            
         } else {
             toast.error('err')
         }
@@ -36,8 +39,7 @@ export default function SignIn() {
         <img src={arrowBack} onClick={()=> navigate('/')} className="w-7 absolute top-3 left-2 rounded-full p-1 border" />
 
         <form onSubmit={(e)=>handleSubmit(e)} className="w-[90%] h-[fit-content] p-2 ml-[5%] border border-amber-400 mt-[28%] rounded-2xl 
-         md:w-[60%] md:ml-[20%] lg:w-[50%] lg:ml-[25%] lg:mt-[13%] xl:w-[40%] xl:mt-[9%] xl:ml-[30%] xl:p-7
-        ">
+         md:w-[60%] md:ml-[20%] lg:w-[50%] lg:ml-[25%] lg:mt-[13%] xl:w-[40%] xl:mt-[9%] xl:ml-[30%] xl:p-7">
 
             <label htmlFor="Email">Email:</label>
             <Input value={userData.email} placeholder={'input Email'}

@@ -1,18 +1,40 @@
-import { useContext } from "react"
+import { useContext, useState } from "react"
 import { cartContext } from "../context/cartContext"
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import back from '../assets/icons/Arrow back.svg'
+import { toast, ToastContainer } from "react-toastify";
 
 export default function CheckOutPage() {
     const {cart, dispatch} = useContext(cartContext);
     const {id} = useParams()
+    const navigate = useNavigate()
+    const isLoggedIn = localStorage.getItem('E-commerce Login')
+
+    const [creditCardNo, setCreditCardNo] = useState()
+
+    function checkLogin() {
+      if (!isLoggedIn) {
+        navigate('/signin')
+      } else if (creditCardNo.length < 0){
+        toast.error('please input card number')
+      }else if (creditCardNo.length < 11){
+        toast.error('card no must be 11 digit')
+      }else if (creditCardNo.length > 11){
+        toast.error('card number must be 11 digit')
+      }else if (creditCardNo.length === 11){
+        toast.success('order placed')
+      }else {
+        toast.error()
+      }
+    }
+
     return(
         <div className="p-2 md:p-3">
-            <button onClick={()=> window.history.back()}
-             className="fixed z-3 border border-black rounded-full w-7"
-            >
+            <button onClick={()=> window.history.back()} className="fixed z-3 border border-black rounded-full w-7">
                 <img src={back} alt="" />
             </button>
+
+            <ToastContainer/>
 
             <div className="p-2 mt-6.5">
                 {cart.map(item => item.id === parseInt(id) &&
@@ -21,15 +43,15 @@ export default function CheckOutPage() {
                       <span>Price: ${item.price.toLocaleString()}.00</span> {' '}
                       <span>Total Price: ${(item.price * item.quantity).toLocaleString()}.00</span>
                       </div>
-                      <div className="flex justify-between xl:w-[50%]">
+
+                      <div className="flex justify-between xl:w-[30%]">
                         <div className="w-[25%] grid-cols-3 space-y-3.5">
                           <img src={item.directory} alt={item.name} className="rounded-2xl"/>
                           <img src={item.directory} alt={item.name} className="rounded-2xl" />
                           <img src={item.directory} alt={item.name} className="rounded-2xl" />
                         </div>
-                        <img src={item.directory} alt={item.name}
-                         className="w-[70%] rounded-2xl"
-                        />
+
+                        <img src={item.directory} alt={item.name} className="w-[70%] rounded-2xl"/>
                       </div>
 
                      <div className="xl:w-[50%] xl:absolute xl:ml-[50%] xl:top-[30%]">
@@ -44,7 +66,9 @@ export default function CheckOutPage() {
                           >
                           -
                         </button>
+
                         <span>Quantity:{item.quantity}</span>
+
                         <button onClick={()=> dispatch({type:'cart/increment', payload:item.id})}
                           className="bg-amber-200 rounded-xl p-1 font-bold w-[10%]"
                           >
@@ -59,13 +83,16 @@ export default function CheckOutPage() {
                         <option value="Opay">Opay</option>
                       </select>
 
-                      <input type="number" placeholder="input your credit card No."
+                      <input type="number" value={creditCardNo} placeholder="input your credit card No."
                        className="border rounded-r-xl text-center w-[70%] md:w-[40%]" 
+                       onChange={(e)=> setCreditCardNo(e.target.value)}
                       />
 
                        <br />
 
-                      <button className="w-[30%] border p-1 rounded-xl ml-[35%] bg-green-500 text-white font-bold md:mt-2 md:ml-[41%] md:w-[20%]">
+                      <button className="w-[30%] border p-1 rounded-xl ml-[35%] bg-green-500 text-white font-bold md:mt-2 md:ml-[41%] md:w-[20%]"
+                       onClick={checkLogin}
+                      >
                         Order
                       </button>
         

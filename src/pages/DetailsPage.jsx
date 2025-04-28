@@ -11,10 +11,8 @@ export default function DetailsPage() {
 
     return(
         <div className="p-2 md:p-3">
-            <button onClick={()=> window.history.back()}
-             className="fixed z-3 border border-black rounded-full w-7"
-            >
-                <img src={back} alt="" />
+            <button onClick={()=> window.history.back()} className="fixed z-3 border border-black rounded-full w-7">
+                <img src={back}/>
             </button>
 
             <div className="p-2 mt-6.5 md:w-[70%] md:ml-[15%] xl:ml-0 xl:mt-9">

@@ -10,13 +10,15 @@ function HomePage() {
             <Header/>
             <br />
             <div className="mt-18 p-2 lg:mt-10 xl:mt-15 xl:w-[80vw] xl:ml-[10%] xl:bg-amber-200">
-             <img src={JAMBBOX} alt=""
-                className="xl:w-[50%]"
+             <img src={JAMBBOX} alt="" className="xl:w-[50%]"/>
+
+             <img src={Frame} alt=""
+              className="hidden xl:block xl:h-[226px] xl:absolute xl:w-auto xl:-mt-[17%] xl:right-40.5" 
              />
-             <img src={Frame} alt="" className="hidden xl:block xl:h-[226px] 
-             xl:absolute xl:w-auto xl:-mt-[17%] xl:right-40.5" />
             </div>
+
             <br />
+            
             <Favourites/>
             <br />
             <FlashSales/>
