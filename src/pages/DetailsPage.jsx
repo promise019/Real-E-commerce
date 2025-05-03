@@ -3,50 +3,103 @@ import back from '../assets/icons/Arrow left.svg'
 import products from "../assets/database/Database";
 import { useContext } from "react";
 import { cartContext } from "../context/cartContext";
+import WishImg from "../assets/icons/Heart.svg";
+import { wishlistContext } from "../context/wishListContext";
 
 
 export default function DetailsPage() {
     const {id} = useParams()
-    const {dispatch} = useContext(cartContext)
+    const {dispatch, cart} = useContext(cartContext)
+    const {wishList, addWishlist, removeWishlist} = useContext(wishlistContext)
 
     return(
-        <div className="p-2 md:p-3">
+        <div className="p-2 md:p-3 overflow-x-hidden bg-gray-200 xl:h-[100vh]">
             <button onClick={()=> window.history.back()} className="fixed z-3 border border-black rounded-full w-7">
                 <img src={back}/>
             </button>
 
-            <div className="p-2 mt-6.5 md:w-[70%] md:ml-[15%] xl:ml-0 xl:mt-9">
-                {products.map(item => item.id === parseInt(id) &&
-                    <div className="" key={item.id}>
-                      <div className="flex justify-between xl:w-[50%]">
-                        <div className="w-[25%] grid-cols-3 space-y-3.5">
-                          <img src={item.directory} alt={item.name} className="rounded-2xl"/>
-                          <img src={item.directory} alt={item.name} className="rounded-2xl"/>
-                          <img src={item.directory} alt={item.name} className="rounded-2xl"/>
-                        </div>
-                        <img src={item.directory} alt={item.name}
-                         className="w-[70%] rounded-2xl"
-                        />
-                      </div>
+            {products.map(item => item.id === parseInt(id) &&
+                <div key={item.id} className="bg-white p-2 md:p-3 md:flex md:justify-between md:space-x-3 lg:w-[90%] lg:p-2 lg:ml-[5%] xl:flex space-x-3 xl:w-[80%] xl:ml-[10%] xl:p-3">
 
-                     <div className="xl:w-[50%] xl:absolute xl:ml-[50%] xl:top-[30%]">
-                      {/* <h1>{item.price}</h1> */}
-                      <h2 className="text-center text-2xl mt-3 font-bold">{item.name}</h2>
-                      <p className="text-center">{item.describtion}</p>
+                 <img src={WishImg} className={!wishList.find(i=> i.id === parseInt(id)) ? " absolute bg-white p-1 right-2 rounded-full w-8 lg:right-15 xl:w-7 xl:right-40 " : " absolute bg-green-500 p-1 right-2 rounded-full w-8 lg:right-15 xl:w-7 xl:right-40 " }
+                  onClick={()=>wishList.find(i=> i.id === item.id) ? removeWishlist(item.id) : addWishlist(item)}
+                 />
 
-                      
-                      <Link to={`/checkout/${item.id}`} >
-                        <button onClick={()=> dispatch({type:'cart/add', payload:item})}
-                         className="w-[30%] p-1 rounded-xl ml-[35%] bg-green-500 text-white font-bold md:mt-2 md:ml-[35%]">
-                            Buy
-                        </button>
-                      </Link>
-
-                     </div>
+                  <div className="md:w-[50%] xl:w-[50%] xl:h-[20%] xl:flex xl:space-x-2">
+                    <div className="hidden xl:block xl:space-y-2 xl:w-[40%] xl:p-1 ">
+                      <img src={item.directory} className="xl:w-[100%] xl:h-[160px] xl:rounded-3xl inline-block" />
+                      <img src={item.directory} className="xl:w-[100%] xl:h-[160px] xl:rounded-3xl inline-block" />
+                      <img src={item.directory} className="xl:w-[100%] xl:h-[160px] xl:rounded-3xl inline-block" />
                     </div>
-                )}
+                    <img src={item.directory} alt={item.name} className="w-[550px] h-[400px] ml-[2%] md:w-[90%] md:rounded-3xl lg:h-[450px] xl:w-[50%] xl:h-[400px] xl:ml-0 xl:h-auto" />
+                  </div>
 
-            </div>
+                  <div className="md:w-[50%] xl:w-[50%]">
+                    <h1 className="font-bold xl:text-2xl">{item.name}</h1>
+                    <br />
+
+                    <h1 className="font-semibold xl:text-2xl">${item.price}.00</h1>
+
+                    <span>Rating: {item.rating}</span>
+                    <br />
+                    <br />
+
+                    <p>{item.describtion}</p>
+                    <br />
+
+                    {!cart.find(i=> i.id === item.id) ? <button onClick={()=> dispatch({type:'cart/add', payload:item})} className="bg-orange-300 p-2 text-white font-bold xl:w-[fit-content] xl:mb-3 ">
+                      Add to cart
+                    </button> :
+
+                    <div className="flex justify-between w-[160px] ml-[29%] sm:ml-0 xl:w-[200px] xl:p-2 ">
+                      <button onClick={()=> dispatch({type:'cart/decrement', payload:item.id})}
+                       className="detailsPage-quantity-button"
+                        >
+                          -
+                      </button>
+
+                      {cart.map(i=> i.id === item.id && <div key={id} className="w-[60%] p-1 text-center"
+                        >
+                        {i.quantity}
+                        </div>
+                      )}
+
+                      <button onClick={()=> dispatch({type:'cart/increment', payload:item.id})}
+                        className="detailsPage-quantity-button"
+                        >
+                          +
+                      </button>
+
+                    </div>
+                    }
+
+                  <div className="block border-t mt-2 xl:mt-0">
+
+                    <h1 className="font-bold">Product details:</h1>
+                    
+                    <ul>
+                      {item.product_details.map((list, index)=>
+                        <li key={index + 1}>{list}</li>
+                      )}
+                    </ul>
+
+                  </div>
+
+                  <br />
+                  
+                  <hr />
+
+                  <Link to={`/checkout/${item.id}`}>
+                    <button onClick={()=> dispatch({type:'cart/add', payload:item})}
+                     className="bg-green-400 p-2 text-white font-bold rounded-xl w-[40%]  xl:w-[40%] mt-2 ml-[30%] xl:mt-3 xl:ml-[30%]">
+                      Buy
+                    </button>
+                  </Link>
+
+                  </div>
+                  
+                </div>
+            )}
         </div>
     )
 }

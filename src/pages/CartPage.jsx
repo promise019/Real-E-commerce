@@ -7,6 +7,9 @@ import { useNavigate, Link } from "react-router"
 
 export default function CartPage() {
     const {cart, dispatch} = useContext(cartContext)
+
+    const items = cart.reduce((acc, i)=> (acc + i.price * i.quantity),0)
+
     const navigate = useNavigate()
     return(
         <div>
@@ -60,6 +63,11 @@ export default function CartPage() {
                         
                 </div>
             )}
+            <div onClick={()=> navigate('/checkout')} className="bg-red-400 w-[fit-content] p-2 rounded-lg text-white ml-4 sm:ml-0">
+                total cost: ${items}
+                <br />
+                <button>Order All</button>
+            </div>
             </div>
         </div>
     )

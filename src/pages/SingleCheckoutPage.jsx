@@ -2,10 +2,13 @@ import { useContext, useState } from 'react';
 import {cartContext} from '../context/cartContext'
 import { toast, ToastContainer } from 'react-toastify';
 import { AuthContext } from '../context/AuthContext';
-import { useNavigate } from 'react-router';
+import { useNavigate, useParams } from 'react-router';
 import { NavigationTrackContext } from '../context/NavigationTrackContecxt';
 
-const CheckoutPage = () => {
+const SingleCheckoutPage = () => {
+
+  const {id} = useParams();
+
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -24,9 +27,7 @@ const CheckoutPage = () => {
 
   const navigate = useNavigate();
 
-  const subtotal = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
   const shipping = 17.99;
-  const total = subtotal + shipping;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +36,7 @@ const CheckoutPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setPreviousPage('/checkout')
+    setPreviousPage(`/checkout/${id}`)
 
     if (loginData){
       console.log('Order submitted', form);
@@ -157,30 +158,28 @@ const CheckoutPage = () => {
           </div>
 
           {/* Order Summary */}
+          {cart.map((item) => item.id === parseInt(id) && (
           <div className="bg-gray-50 p-4 rounded shadow-md">
             <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
             <ul className="divide-y divide-gray-200 mb-4">
-              {cart.map((item) => (
+              
                 <li key={item.id} className="flex justify-between py-2 text-sm">
                   <span>
                     {item.name} x {item.quantity}
                   </span>
                   <span>${(item.price * item.quantity).toFixed(2)}</span>
                 </li>
-              ))}
+
             </ul>
             <div className="text-sm space-y-1">
-              <div className="flex justify-between">
-                <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
-              </div>
+              
               <div className="flex justify-between">
                 <span>Shipping</span>
                 <span>${shipping.toFixed(2)}</span>
               </div>
               <div className="flex justify-between font-semibold text-lg border-t pt-2">
                 <span>Total</span>
-                <span>${total.toFixed(2)}</span>
+                <span>${(item.price + shipping).toFixed(2)}</span>
               </div>
             </div>
             <button
@@ -190,10 +189,11 @@ const CheckoutPage = () => {
               Place Order
             </button>
           </div>
+        ))}
         </form>
       </div>
     </div>
   );
 };
 
-export default CheckoutPage;
+export default SingleCheckoutPage;

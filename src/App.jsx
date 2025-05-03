@@ -5,8 +5,11 @@ import CartPage from './pages/CartPage'
 import WishListPage from './pages/WishlistPage'
 import DetailsPage from './pages/DetailsPage'
 import CheckOutPage from './pages/CheckOutPage'
+import SingleCheckOutPage from './pages/SingleCheckoutPage'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
+import About from './pages/about'
+import ContactPage from './pages/contact'
 
 
 function App() {
@@ -17,9 +20,12 @@ function App() {
       <Route path='/cartPage' element={<CartPage/>}/>
       <Route path='/wishlist' element={<WishListPage/>}/>
       <Route path='/detailspage/:id' element={<DetailsPage/>}/>
-      <Route path='/checkout/:id' element={<CheckOutPage/>}/>
+      <Route path='/checkout/:id' element={<SingleCheckOutPage/>}/>
+      <Route path='/checkout' element={<CheckOutPage/>}/>
       <Route path='/signin' element={<SignIn/>}/>
       <Route path='/signup' element={<SignUp/>}/>
+      <Route path='/about' element={<About/>}/>
+      <Route path='/contact' element={<ContactPage/>}/>
     </Routes>
   </div>
  )

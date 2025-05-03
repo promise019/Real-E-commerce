@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import Input from "../ReusableComponent/Input";
 import { Link, useNavigate } from "react-router";
 import arrowBack from '../assets/icons/Arrow back.svg'
 import { EmailValidator, NameValidator, PasswordValidator } from "../utility/input-validator";
 import { toast, ToastContainer } from "react-toastify";
+import { AuthContext } from "../context/AuthContext";
 
 export default function SignUp() {
     const navigate = useNavigate()
 
-    const [signupData, setSignupData] = useState(JSON.parse(localStorage.getItem('E-commerce-signup')) || [])
+    const {setSignupData} = useContext(AuthContext)
 
     const [userData, setUserData] = useState({
         name:'',
@@ -25,15 +26,13 @@ export default function SignUp() {
     const passwordValidator = PasswordValidator(userData.password)
 
 
-    useEffect(()=>{
-        localStorage.setItem('E-commerce-signup', JSON.stringify(signupData))
-    },[signupData])
+    
 
     function handleSubmit(e) {
         e.preventDefault()
 
         if (userData.name.length < 1 || userData.email.length < 1 || userData.password.length < 1 || !userData.password.match(/[a-z]/)
-            || !userData.password.match(/[A-Z]/) || !userData.password.match(/[0-9]/)) {
+            || !userData.password.match(/[A-Z]/) || !userData.password.match(/[0-9]/) || !/@(gmail\.com|yahoomail\.com)$/.test(userData.email)) {
 
             setEmailError(emailValidator)
             setPasswordError(passwordValidator)
@@ -76,12 +75,12 @@ export default function SignUp() {
              onChange={(e)=> setUserData({...userData, email:e.target.value})} />
              {emailError.length > 0 && <p>{emailError}</p>}
 
-             <br />
+            
 
              <label htmlFor="Password">Password:</label>
              <Input value={userData.password} placeholder={'input password'}
              onChange={(e)=> setUserData({...userData, password:e.target.value})} />
-             {passwordError.length > 0 && <p>{passwordError}</p>}
+             {passwordError.length > 0 && <span>{passwordError}</span>}
 
              <button className="bg-red-400 text-white font-bold p-2 rounded-xl ml-[40%] md:ml-[42%] lg:ml-[43%]">
                 submit

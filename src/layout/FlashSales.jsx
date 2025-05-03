@@ -31,6 +31,10 @@ function FlashSales() {
 
     let totalPage = Math.ceil(storedProducts.length /itemsPerPage)
 
+    useEffect(()=>{
+        setCurrentPage(1)
+    },[query])
+
     //smooth scrolll
     const scrollRef = useRef(null)
 
@@ -56,6 +60,12 @@ function FlashSales() {
 
     //all wishlist logic
     const {addWishlist, removeWishlist, wishList} = useContext(wishlistContext)
+
+    //page number buttons logic
+    let page = []
+    for (let index = 0; index < totalPage; index++) {
+        page.push(index)
+    }
     
     
     return(
@@ -84,7 +94,7 @@ function FlashSales() {
                          onClick={()=>{ const inwishList = wishList.some(i=> i.id === item.id);
                           inwishList ? (removeWishlist(item.id), toast.info('removed from wishlist')) 
                           : (addWishlist(item), toast.success('item added to wishlist'))}}
-                         src={wishlistIcon} className={wishList.find(i=> i.id === item.id )}
+                         src={wishlistIcon} className={wishList.find(i=> i.id === item.id )} 
                         />
                         
                         {/* detail page link */}
@@ -111,15 +121,21 @@ function FlashSales() {
                 {search.length < 1 && <h1>out of stock</h1>}
 
 
-                <div className="text-center lg:-ml-[5%] xl:text-center">
-                    <p>Page {currentPage} of {totalPage}</p>
-                    <button onClick={Previous} disabled={currentPage < 2} className="border text-amber-600 font-bold disabled:text-black">
+                <div className="grid grid-flow-col space-x-2 w-[70%] ml-[14%] mt-5 text-center md:w-[50%] md:ml-[25%] lg:ml-[26%] lg:w-[40%] xl:text-center">
+                    {/* <p className="block">Page {currentPage} of {totalPage}</p> */}
+                    
+                    <button onClick={Previous} disabled={currentPage < 2} className="page-buttons">
                         Prev
                     </button>
 
-                        {'  '}
+                        {page.map(i=>
+                            <button key={i.id} disabled={i+1 === currentPage} className="page-buttons" 
+                             onClick={()=>{ setCurrentPage(i+1), scrollRef.current.scrollIntoView({behaviour: 'smooth'})}}>
+                                {i+1}
+                            </button>
+                        )}
 
-                    <button onClick={Next} disabled={currentPage === totalPage} className="border text-amber-600 font-bold disabled:text-black">
+                    <button onClick={Next} disabled={currentPage === totalPage} className="page-buttons">
                         Next
                     </button>
                 </div>

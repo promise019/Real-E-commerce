@@ -1,27 +1,33 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Input from "../ReusableComponent/Input";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import arrowBack from '../assets/icons/Arrow back.svg'
 import { toast, ToastContainer } from "react-toastify";
+import { AuthContext } from "../context/AuthContext";
+import { NavigationTrackContext } from "../context/NavigationTrackContecxt";
 
 export default function SignIn() {
-    const [loginData, setLoginData] = useState(JSON.parse(localStorage.getItem('E-commerce Login')) || [])
-    const [signupData, setSignUp] = useState(JSON.parse(localStorage.getItem('E-commerce-signup')))
+    const {signupData, setLoginData} = useContext(AuthContext)
+    const {previousPage} = useContext(NavigationTrackContext)
 
     const [userData, setUserData] = useState({
         password:'',
         email:''
     })
 
+    const navigate = useNavigate()
+
     function handleSubmit(e) {
         e.preventDefault()
 
         if (userData.email.length < 1 || userData.password.length < 1) {
             toast.error('email and password required')
+            
         } else if(signupData.email === userData.email && signupData.password === userData.password){
             toast.success('login successfull')
             localStorage.setItem('E-commerce Login', JSON.stringify(userData))
-            window.history.back(-2)
+            navigate(previousPage)
+
         }else if(signupData.email !== userData.email || signupData.password !== userData.password){
             toast.error('incorrect email or password')
             
@@ -36,7 +42,7 @@ export default function SignIn() {
     return(
      <div>
         <ToastContainer/>
-        <img src={arrowBack} onClick={()=> navigate('/')} className="w-7 absolute top-3 left-2 rounded-full p-1 border" />
+        <img src={arrowBack} onClick={()=> navigate(previousPage)} className="w-7 absolute top-3 left-2 rounded-full p-1 border" />
 
         <form onSubmit={(e)=>handleSubmit(e)} className="w-[90%] h-[fit-content] p-2 ml-[5%] border border-amber-400 mt-[28%] rounded-2xl 
          md:w-[60%] md:ml-[20%] lg:w-[50%] lg:ml-[25%] lg:mt-[13%] xl:w-[40%] xl:mt-[9%] xl:ml-[30%] xl:p-7">

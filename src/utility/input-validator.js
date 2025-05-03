@@ -15,8 +15,8 @@ export function EmailValidator(email) {
         Error.push('Email is required')
     } else if (!/@(gmail\.com|yahoomail\.com)$/.test(email)) {
         Error.push('Email must end with @ gmail.com or @yahoomail.com')
-    } else {
-        Error.push('')
+    } else if (/@(gmail\.com|yahoomail\.com)$/.test(email)){
+        Error.push([])
     }
 
     return Error

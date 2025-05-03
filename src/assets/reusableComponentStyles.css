@@ -1,6 +1,16 @@
 @import 'tailwindcss';
 
-.bg-image{
-    background-image: url('../assets/image/transparent.png');
-    @apply h-[100vh]
+.page-buttons{
+   @apply border text-amber-600 font-bold p-1 disabled:text-black
+}
+.detailsPage-quantity-button{
+   @apply bg-amber-500 font-bold text-white w-[60px] xl:w-[60px] xl:text-3xl  rounded-xl
+}
+
+.wishAdded{
+   @apply w-7 absolute bg-green-500  rounded-full p-1 ml-[32%] mt-1 md:ml-[15%] lg:ml-[15%] xl:ml-[10%]
+}
+
+.wish-not-added{
+   @apply w-7 absolute bg-white  rounded-full p-1 ml-[32%] mt-1 md:ml-[15%] lg:ml-[15%] xl:ml-[10%]
 }
