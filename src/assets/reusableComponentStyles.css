@@ -1,16 +1,42 @@
 @import 'tailwindcss';
 
 .page-buttons{
-   @apply border text-amber-600 font-bold p-1 disabled:text-black
+   @apply border text-black font-bold p-1 disabled:text-amber-400
 }
 .detailsPage-quantity-button{
    @apply bg-amber-500 font-bold text-white w-[60px] xl:w-[60px] xl:text-3xl  rounded-xl
 }
 
 .wishAdded{
-   @apply w-7 absolute bg-green-500  rounded-full p-1 ml-[32%] mt-1 md:ml-[15%] lg:ml-[15%] xl:ml-[10%]
+   @apply w-7 absolute bg-red-200  rounded-full p-1 ml-[32%] mt-1 md:ml-[15%] lg:ml-[15%] xl:ml-[10%]
 }
 
 .wish-not-added{
    @apply w-7 absolute bg-white  rounded-full p-1 ml-[32%] mt-1 md:ml-[15%] lg:ml-[15%] xl:ml-[10%]
+}
+input::placeholder{
+   @apply text-gray-500
+}
+
+.inset{
+   box-shadow: inset;
+}
+
+.registration{
+   @apply max-w-[90%] ml-[5%] mt-20 grid space-y-5 text-center md:w-[60%] md:ml-[20%] lg:w-[45%] lg:ml-[27.5%] xl:max-w-[30%] xl:ml-[35%] xl:mt-20
+}
+
+.continue{
+   @apply bg-amber-600 text-white font-bold p-3 rounded-lg w-[100%]
+}
+.reg-error{ 
+   @apply -ml-40 text-red-500 md:-ml-70 lg:-ml-73 xl:-ml-60
+}
+
+.reg-erro{ 
+   @apply -ml-50 text-red-500 md:-ml-80 lg:-ml-83 xl:-ml-70
+}
+
+.hidden-scrollBar::-webkit-scrollbar-track{
+   background-color: aqua;
 }

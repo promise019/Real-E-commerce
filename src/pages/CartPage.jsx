@@ -3,71 +3,64 @@ import { cartContext } from "../context/cartContext"
 import home from '../assets/icons/Home.svg'
 import Header from "../layout/Header"
 import { useNavigate, Link } from "react-router"
+import { NavigationTrackContext } from "../context/NavigationTrackContecxt"
 
 
 export default function CartPage() {
     const {cart, dispatch} = useContext(cartContext)
+    const {setPreviousPage} = useContext(NavigationTrackContext)
 
     const items = cart.reduce((acc, i)=> (acc + i.price * i.quantity),0)
+    const shipping = 18.00
 
     const navigate = useNavigate()
     return(
-        <div>
+        <div className="bg-gray-400 h-[fit-content]">
             <Header/>
 
             <img onClick={()=> navigate('/')}
-             src={home} className="z-11 fixed w-6.5 left-[50%] top-2 sm:left-[62%] md:hidden" />
+             src={home} className="hidden z-11 fixed w-6.5 left-[50%] top-2 sm:left-[62%] md:hidden" />
             
-            <div className="absolute w-[100vw] mt-25 pl-2 sm:pl-3 xl:w-[100vw] xl:pl-[6%]">
-            {cart.length < 1 && <div className="text-center">No Item Added To cart</div>}
-            {cart?.map(item=>
-                <div key={item.id} 
-                 className="w-[43%] h-[220px] inline-block ml-4 p-1 border border-gray-400 rounded-2xl mb-4 sm:ml-[5%] sm:mr-[3%]
-                 sm:w-[40%]
-                 md:w-[21%] md:ml-1.5 xl:w-[17%] xl:ml-0 xl:mr-[2%] xl:h-[230px]"
-                >
-                  <Link to={`/checkout/${item.id}`}>
-                    <div className="absolute bg-red-400 text-white p-1 rounded-br-2xl">
-                        ${item.price * item.quantity }
+            <div className="absolute w-[98vw] grid space-y-2 bg-white mt-25 pl-2 sm:pl-3 md:w-[50dvw] lg:w-[50vw] xl:w-[70vw] xl:pl-[7%]">
+             {cart.length < 1 && <div className="text-center">No Item Added To cart</div>}
+             {cart?.map(item=>
+                <div key={item.id} className="shadow shadow-amber-300 py-2 px-1 mb-3">
+                    <Link to={`/detailspage/${item.id}`}>
+                    <img src={item.directory} alt={item.name}  className="inline-block w-[87px] h-[87px]"/>
+                    <div className="inline-block w-[260px] p-2 lg:flex lg:justify-between lg:ml-26 lg:-mt-17 lg:w-[540px] xl:w-[750px] xl:ml-30 xl:-mt-23 ">
+                        <p>{item.name}</p>
+                        <h1 className="font-bold text-lg">${item.price.toFixed(2)}</h1>
                     </div>
+                    </Link>
 
-                    <img src={item.directory} alt={item.name}
-                     className="w-[100%] h-[120px] mb-1 xl:h-[130px]"
-                    />
-
-                    <h1 className="inline">{item.name.length > 10 ?
-                     item.name.slice(0,10)+'...' : item.name}
-                    </h1>
-
-                    <h3 className="inline float-right text-green-700">{item.rating}</h3>
-                 </Link>
-
-                    <div className="flex justify-between p-1">
-                        <button onClick={()=> dispatch({type:'cart/decrement', payload:item.id})}
-                            className="bg-red-100 w-[15%] font-bold text-xl">
-                                -
+                    <div className="flex justify-between pt-2 h-[42px] lg:mt-7 xl:mt-10">
+                        <button onClick={()=> dispatch({type:'cart/remove', payload:item.id})} className="text-red-400 rounded-lg">
+                            Remove
                         </button>
 
-                        <span>{item.quantity}</span>
+                        <div className="">
+                            <button onClick={()=> dispatch({type:'cart/decrement', payload:item.id})} disabled={parseInt(item.quantity) === 1}
+                                className="p-1 text-xl font-bold border w-[30px] bg-amber-400 text-white rounded-lg disabled:bg-gray-400">
+                                    -
+                            </button>
 
-                        <button onClick={()=> dispatch({type:'cart/increment', payload:item.id})}
-                            className="bg-green-100 w-[15%] font-bold text-xl">
-                                +
-                        </button>
+                            <div className="inline-block w-[60px] text-center">{item.quantity}</div>
+
+                            <button onClick={()=> dispatch({type:'cart/increment', payload:item.id})}
+                                className="p-1 text-xl font-bold border w-[30px] bg-amber-400 text-white rounded-lg">
+                                    +
+                            </button>
+                        </div>
                     </div>
 
-                    <button onClick={()=>dispatch({type:'cart/remove', payload:item.id})}
-                     className="w-[100%] bg-black text-white font-bold p-1 rounded-xl text-[13px]">
-                        remove from cart
-                    </button>
-                        
                 </div>
-            )}
-            <div onClick={()=> navigate('/checkout')} className="bg-red-400 w-[fit-content] p-2 rounded-lg text-white ml-4 sm:ml-0">
-                total cost: ${items}
-                <br />
-                <button>Order All</button>
-            </div>
+                )}
+                <div className="grid mt-4 shadow shadow-amber-200 pb-3 md:fixed md:top-25 md:right-6 md:w-[40dvw] md:p-1 lg:top-23 lg:w-[26vw] lg:right-13 xl:w-[20vw] xl:p-3 xl:right-20 xl:top-17">
+                <div className="flex justify-between p-2">
+                    <span><b>Shipping-Fee</b></span> ${shipping.toFixed(2)}
+                </div>
+                <button onClick={()=>{localStorage.getItem('E-commerce Login') ? navigate('/checkout') : (setPreviousPage('/cartpage'),navigate('/signin'))}} className="bg-amber-400 p-2 rounded-lg text-white font-bold">Checkout ${items}</button>
+                </div>
             </div>
         </div>
     )

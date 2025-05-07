@@ -4,7 +4,6 @@ import { wishlistContext } from "../context/wishListContext";
 import wishlistIcon from '../assets/icons/Heart.svg'
 import back from '../assets/icons/Arrow left.svg'
 import { Link } from "react-router";
-import { productContext } from "../context/productsContext";
 
 export default function WishListPage() {
     const {wishList, addWishlist, removeWishlist} = useContext(wishlistContext)

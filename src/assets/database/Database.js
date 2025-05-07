@@ -34,7 +34,7 @@ import VIPER from './shoes/shoe6.jpg'
 
 const products = [
     {   id:1,
-        name:'SONY – Premium Black Wireless Bluetooth Headset (2025 Edition)',
+        name:'SONY  Premium Black Wireless Bluetooth Headset (2025 Edition)',
         cartegory: 'accessories', 
         rating: 3.5,
         price: 130, 
@@ -45,7 +45,7 @@ const products = [
     },
 
     {   id:2,
-        name:'JBL Pulse X – Premium Black Wireless Bluetooth Speaker (2025 Edition)' , 
+        name:'JBL Pulse X Premium Black Wireless Bluetooth Speaker (2025 Edition)' , 
         cartegory: 'accessories', 
         rating: 4.5,
         price: 70,

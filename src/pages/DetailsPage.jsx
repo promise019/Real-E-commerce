@@ -1,22 +1,28 @@
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import back from '../assets/icons/Arrow left.svg'
 import products from "../assets/database/Database";
 import { useContext } from "react";
 import { cartContext } from "../context/cartContext";
 import WishImg from "../assets/icons/Heart.svg";
 import { wishlistContext } from "../context/wishListContext";
+import { NavigationTrackContext } from "../context/NavigationTrackContecxt";
+import { toast, ToastContainer } from "react-toastify";
 
 
 export default function DetailsPage() {
     const {id} = useParams()
+    const navigate = useNavigate()
     const {dispatch, cart} = useContext(cartContext)
     const {wishList, addWishlist, removeWishlist} = useContext(wishlistContext)
+    const {previousPage, setPreviousPage} = useContext(NavigationTrackContext)
 
     return(
         <div className="p-2 md:p-3 overflow-x-hidden bg-gray-200 xl:h-[100vh]">
-            <button onClick={()=> window.history.back()} className="fixed z-3 border border-black rounded-full w-7">
+            <button onClick={()=> navigate('/')} className="fixed z-3 border border-black rounded-full w-7">
                 <img src={back}/>
             </button>
+
+          <ToastContainer/>
 
             {products.map(item => item.id === parseInt(id) &&
                 <div key={item.id} className="bg-white p-2 md:p-3 md:flex md:justify-between md:space-x-3 lg:w-[90%] lg:p-2 lg:ml-[5%] xl:flex space-x-3 xl:w-[80%] xl:ml-[10%] xl:p-3">
@@ -47,7 +53,8 @@ export default function DetailsPage() {
                     <p>{item.describtion}</p>
                     <br />
 
-                    {!cart.find(i=> i.id === item.id) ? <button onClick={()=> dispatch({type:'cart/add', payload:item})} className="bg-orange-300 p-2 text-white font-bold xl:w-[fit-content] xl:mb-3 ">
+                    {!cart.find(i=> i.id === item.id) ? <button onClick={()=> {dispatch({type:'cart/add', payload:item})
+                     toast.success('item added to cart')}} className="bg-orange-300 p-2 text-white font-bold w-[100%] rounded-lg xl:mb-3 ">
                       Add to cart
                     </button> :
 
@@ -89,12 +96,12 @@ export default function DetailsPage() {
                   
                   <hr />
 
-                  <Link to={`/checkout/${item.id}`}>
-                    <button onClick={()=> dispatch({type:'cart/add', payload:item})}
-                     className="bg-green-400 p-2 text-white font-bold rounded-xl w-[40%]  xl:w-[40%] mt-2 ml-[30%] xl:mt-3 xl:ml-[30%]">
+                    <button onClick={()=> {dispatch({type:'cart/add', payload:item})
+                     localStorage.getItem('E-commerce Login') ? navigate('/checkout') : (setPreviousPage(`/detailspage/${item.id}`), navigate('/signin'))
+                    }}
+                     className="bg-green-400 p-2 text-white font-bold rounded-xl w-[100%] mt-2 xl:mt-3">
                       Buy
                     </button>
-                  </Link>
 
                   </div>
                   

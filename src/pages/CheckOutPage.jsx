@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {cartContext} from '../context/cartContext'
 import { toast, ToastContainer } from 'react-toastify';
 import { AuthContext } from '../context/AuthContext';
@@ -6,19 +6,24 @@ import { useNavigate } from 'react-router';
 import { NavigationTrackContext } from '../context/NavigationTrackContecxt';
 
 const CheckoutPage = () => {
+  const [storedData, setStoredData] = useState(JSON.parse(localStorage.getItem('E-stored-data')) || {})
   const [form, setForm] = useState({
-    name: '',
-    email: '',
-    address: '',
-    city: '',
-    zip: '',
-    cardName: '',
-    cardNumber: '',
-    expiry: '',
-    cvv: ''
+    name: storedData.name,
+    email: storedData.email,
+    address: storedData.address,
+    city: storedData.city,
+    zip: storedData.zip,
+    cardName: storedData.cardName,
+    cardNumber: storedData.cardNumber,
+    expiry: storedData.expiry,
+    cvv: storedData.cvv
   });
 
-  const {cart} = useContext(cartContext);
+  useEffect(()=>{
+    localStorage.setItem('E-stored-data',JSON.stringify(form))
+  },[storedData])
+
+  const {cart, dispatch} = useContext(cartContext);
   const {loginData} = useContext(AuthContext);
   const {setPreviousPage} = useContext(NavigationTrackContext);
 
@@ -36,14 +41,18 @@ const CheckoutPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setPreviousPage('/checkout')
+    setStoredData(form)
 
-    if (loginData){
-      console.log('Order submitted', form);
-      toast.success('Order submitted!');
-    } else if(!loginData){
+    if (localStorage.getItem('E-commerce Login')) {
+      toast.success('order placed')
+      dispatch({type:'cart/delete'})
+      setTimeout(() => {
+        navigate('/')
+      }, 2000);
+      
+     } else {
       navigate('/signin')
-    }
-    
+     }
   };
 
   return (
@@ -163,7 +172,7 @@ const CheckoutPage = () => {
               {cart.map((item) => (
                 <li key={item.id} className="flex justify-between py-2 text-sm">
                   <span>
-                    {item.name} x {item.quantity}
+                    {item.name.slice(0, 20)} x {item.quantity}
                   </span>
                   <span>${(item.price * item.quantity).toFixed(2)}</span>
                 </li>

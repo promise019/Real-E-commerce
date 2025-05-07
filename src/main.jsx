@@ -5,7 +5,6 @@ import { BrowserRouter } from 'react-router'
 import CartProvider from './context/cartContext.jsx'
 import WishlistProvider from './context/wishListContext.jsx'
 import SearchProvider from './context/SearchQueryContext.jsx'
-import ProductProvider from './context/productsContext.jsx'
 import AuthProvider from './context/AuthContext.jsx'
 import NavigationTrackProvider from './context/NavigationTrackContecxt.jsx'
 
@@ -13,7 +12,6 @@ createRoot(document.getElementById('root')).render(
 <NavigationTrackProvider>
   <AuthProvider>
     <CartProvider>
-      <ProductProvider>
         <WishlistProvider>
           <SearchProvider>
             <BrowserRouter>
@@ -21,7 +19,6 @@ createRoot(document.getElementById('root')).render(
             </BrowserRouter>
           </SearchProvider>
         </WishlistProvider>
-      </ProductProvider>
     </CartProvider>
   </AuthProvider>
 </NavigationTrackProvider>

@@ -5,18 +5,15 @@ import { cartContext } from "../context/cartContext"
 import { wishlistContext } from "../context/wishListContext"
 import { Link } from "react-router"
 import { searchContext } from "../context/SearchQueryContext"
-import { productContext } from "../context/productsContext"
 import { ToastContainer, toast } from "react-toastify"
 import 'react-toastify'
 import WishImg from "../ReusableComponent/wishListImg"
 
 function FlashSales() {
-    //all products
-    const {storedProducts} = useContext(productContext)
 
     //search logic
     const {query, setQuery} = useContext(searchContext)
-    const search = storedProducts.filter(item=> item.cartegory.toLowerCase().includes(query.toLowerCase()) || item.describtion.toLowerCase().includes(query.toLowerCase())
+    const search = products.filter(item=> item.cartegory.toLowerCase().includes(query.toLowerCase()) || item.describtion.toLowerCase().includes(query.toLowerCase())
         || item.name.toLowerCase().includes(query.toLowerCase()))
 
     //pagination
@@ -29,7 +26,7 @@ function FlashSales() {
 
     let current = search.slice(firstIndex, lastItemIndex)
 
-    let totalPage = Math.ceil(storedProducts.length /itemsPerPage)
+    let totalPage = Math.ceil(products.length /itemsPerPage)
 
     useEffect(()=>{
         setCurrentPage(1)
@@ -55,8 +52,6 @@ function FlashSales() {
         }
     }
 
-    //all cart logiv
-    const {cart,dispatch} = useContext(cartContext)
 
     //all wishlist logic
     const {addWishlist, removeWishlist, wishList} = useContext(wishlistContext)
@@ -69,79 +64,57 @@ function FlashSales() {
     
     
     return(
-        <div  className="w-[100vw] pl-3 sm:pl-15 md:pl-3 lg:ml-[4%] xl:w-[80vw] xl:ml-[10%] ">
+        <div  className="bg-white rounded-lg w-[96%] ml-[2%] pl-1.5 py-2 md:pl-2.5 space-x-2 space-y-4 md:w-[96vw] lg:space-x-3.5 xl:w-[86vw] xl:ml-[7vw]">
 
             {/* scroll to elememnt */}
             <div className="absolute top-0" ref={scrollRef}/>
 
             <ToastContainer/>
 
-            <h1 className="absolute mb-[1%]">Flash Sales</h1>
-            <br />
+            {current.map(item=>
+                <div key={item.id} className="w-[47.5%] inline-grid shadow shadow-gray-300 p-2 md:w-[23.5%] lg:w-[180px]">
+                    <WishImg src={wishlistIcon}
+                        onClick={()=>{
+                            addWishlist(item)
+                            wishList.find(i=> i.id === item.id) ? removeWishlist(item.id) : addWishlist(item)
+                        }}
+                        className={wishList.find(i=> i.id === item.id)}
+                    />
+                    <Link to={`/detailspage/${item.id}`}>
+                    <img src={item.directory} className="w-[100%] h-[168px] rounded-lg md:w-[100%] md:h-[169px]" />
+                    <h1>{item.name.length > 20 ? item.name.slice(0, 20) : item.name}</h1>
+                    <h2 className="font-bold">$ {item.price}</h2>
+                    </Link>
+                </div>
+            )}
 
-            <div className="overflow-x-scroll overflow-y-hidden ">
-                {current.map(item=>
-                    <div key={item.id}
-                     className="w-[45%] h-[190px] inline-block p-1 border border-gray-400 rounded-2xl mb-4 ml-[1%] mr-[3%]
-                     sm:w-[42%] md:w-[22%] md:ml-0 lg:w-[20%] xl:w-[18%] xl:ml-0 xl:mr-[2%] xl:h-[200px]">
-                      
-                        <div className="absolute bg-red-400 text-white p-1 rounded-br-2xl">
-                            ${item.price}
-                        </div>
-                        
-                        {/* wishlist icon and logic */}
-                        <WishImg 
-                         onClick={()=>{ const inwishList = wishList.some(i=> i.id === item.id);
-                          inwishList ? (removeWishlist(item.id), toast.info('removed from wishlist')) 
-                          : (addWishlist(item), toast.success('item added to wishlist'))}}
-                         src={wishlistIcon} className={wishList.find(i=> i.id === item.id )} 
-                        />
-                        
-                        {/* detail page link */}
-                        <Link to={`/detailspage/${item.id}`}>
-                            <img src={item.directory} alt={item.name} className="w-[100%] h-[120px] lg:w-[90%] lg:ml-[5%] mb-1 xl:h-[130px]"/>
+            <div className="absolute w-[70%] mt-6 ml-[13%] flex justify-between md:w-[40%] md:ml-[28%] lg:w-[30%] lg:ml-[33%] xl:ml-[29%]">
+                <button onClick={()=> {setCurrentPage(currentPage - 1), scrollRef.current.scrollIntoView({behaviour: 'smooth'})}}
+                 disabled={currentPage===1}
+                 className="bg-white text-black p-1 font-bold disabled:text-amber-400"
+                >
+                    Prev
+                </button>
 
-                            <h1 className="inline">{item.name.length > 10 ? item.name.slice(0,10)+'...' : item.name}</h1>
-
-                            <h3 className="inline float-right text-green-700">{item.rating}</h3>
-
-                        </Link>
-                    
-                            {/* add to cart button */}
-                        <button disabled={cart.find(i => item.id == i.id )} onClick={()=>{ let inCart = cart.some(i=> i.id === item.id)
-                            inCart ? toast.info('item already added to cart') : (dispatch({type:'cart/add', payload:item}), toast.success('item added to cart'))  }}
-                         className="w-[100%] bg-black text-white font-bold p-1 rounded-xl disabled:bg-red-300">
-                            Add to cart
-                        </button>
-                        
-                    </div>
+                {page.map(index=>
+                    <button onClick={()=> {setCurrentPage(index + 1), scrollRef.current.scrollIntoView({behaviour: 'smooth'})}}
+                     disabled={index+1 === currentPage}
+                     className="bg-white w-[30px] text-black p-1 disabled:text-amber-400"
+                    >
+                        {index + 1}
+                    </button>
                 )}
 
-                {/* out of stock */}
-                {search.length < 1 && <h1>out of stock</h1>}
-
-
-                <div className="grid grid-flow-col space-x-2 w-[70%] ml-[14%] mt-5 text-center md:w-[50%] md:ml-[25%] lg:ml-[26%] lg:w-[40%] xl:text-center">
-                    {/* <p className="block">Page {currentPage} of {totalPage}</p> */}
-                    
-                    <button onClick={Previous} disabled={currentPage < 2} className="page-buttons">
-                        Prev
-                    </button>
-
-                        {page.map(i=>
-                            <button key={i.id} disabled={i+1 === currentPage} className="page-buttons" 
-                             onClick={()=>{ setCurrentPage(i+1), scrollRef.current.scrollIntoView({behaviour: 'smooth'})}}>
-                                {i+1}
-                            </button>
-                        )}
-
-                    <button onClick={Next} disabled={currentPage === totalPage} className="page-buttons">
-                        Next
-                    </button>
-                </div>
-                
+                <button onClick={()=> {setCurrentPage(currentPage + 1), scrollRef.current.scrollIntoView({behaviour: 'smooth'}), scrollRef.current.scrollIntoView({behaviour: 'smooth'})}}
+                 disabled={currentPage===totalPage}
+                 className="bg-white text-black p-1 font-bold disabled:text-amber-400"
+                >
+                    Next
+                </button>
             </div>
+           
 
+            
         </div>
     )
 }

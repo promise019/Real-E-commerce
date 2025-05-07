@@ -44,22 +44,23 @@ export default function SignIn() {
         <ToastContainer/>
         <img src={arrowBack} onClick={()=> navigate(previousPage)} className="w-7 absolute top-3 left-2 rounded-full p-1 border" />
 
-        <form onSubmit={(e)=>handleSubmit(e)} className="w-[90%] h-[fit-content] p-2 ml-[5%] border border-amber-400 mt-[28%] rounded-2xl 
-         md:w-[60%] md:ml-[20%] lg:w-[50%] lg:ml-[25%] lg:mt-[13%] xl:w-[40%] xl:mt-[9%] xl:ml-[30%] xl:p-7">
+        <form onSubmit={(e)=>handleSubmit(e)} className="registration">
 
-            <label htmlFor="Email">Email:</label>
+            <h1 className="font-bold text-lg">Welcome To Ideal Commerce</h1>
+
+            <p>Type in your password and email to proceed or create an account</p>
+
             <Input value={userData.email} placeholder={'input Email'}
              onChange={(e)=> setUserData({...userData, email:e.target.value})} />
 
              <br />
 
-            <label htmlFor="password">Password:</label>
              <Input value={userData.password} placeholder={'input Password'}
              onChange={(e)=> setUserData({...userData, password:e.target.value})} />
 
              <br />
 
-             <button className="bg-red-400 text-white font-bold p-2 rounded-xl ml-[40%] md:ml-[42%] lg:ml-[43%]">submit</button>
+             <button className="continue">Continue</button>
 
              <p className="text-center">dont't have an account? <Link to='/signup' className="text-red-400">signup</Link></p>
         </form>

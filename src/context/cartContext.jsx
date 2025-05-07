@@ -30,6 +30,9 @@ function cartReducer(state, action) {
             return state.map(item=> item.id === action.payload ? 
                 {...item, quantity:(item.quantity < 2 ? 1 : item.quantity - 1)} : item)
             break;
+        case 'cart/delete':
+            return []
+            break;
         
         default:
             break;
