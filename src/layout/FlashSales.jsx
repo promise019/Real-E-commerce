@@ -71,7 +71,8 @@ function FlashSales() {
 
             <ToastContainer/>
 
-            {current.map(item=>
+            {search.length < 1 ? <h1 className="flex justify-center">out of stock</h1> :
+             current.map(item=>
                 <div key={item.id} className="w-[47.5%] inline-grid shadow shadow-gray-300 p-2 md:w-[23.5%] lg:w-[180px]">
                     <WishImg src={wishlistIcon}
                         onClick={()=>{
@@ -88,7 +89,7 @@ function FlashSales() {
                 </div>
             )}
 
-            <div className="absolute w-[70%] mt-6 ml-[13%] flex justify-between md:w-[40%] md:ml-[28%] lg:w-[30%] lg:ml-[33%] xl:ml-[29%]">
+            <div className="absolute w-[70%] mb-0 mt-6 ml-[13%] flex justify-between md:w-[40%] md:ml-[28%] lg:w-[30%] lg:ml-[33%] xl:ml-[29%]">
                 <button onClick={()=> {setCurrentPage(currentPage - 1), scrollRef.current.scrollIntoView({behaviour: 'smooth'})}}
                  disabled={currentPage===1}
                  className="bg-white text-black p-1 font-bold disabled:text-amber-400"
@@ -113,8 +114,6 @@ function FlashSales() {
                 </button>
             </div>
            
-
-            
         </div>
     )
 }
